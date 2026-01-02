@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thế Anh Profile</title>
-    <meta name="description" content="Welcome to my profile">
     
-    <!-- Font Awesome cho icon -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
 
     <style>
         /* --- CẤU HÌNH CƠ BẢN --- */
@@ -23,35 +23,69 @@
             --text-color: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Ẩn thanh cuộn */
+            overflow: hidden; 
             color: var(--text-color);
             position: relative;
+        }
+
+        /* --- MÀN HÌNH CHỜ (CLICK TO ENTER) --- */
+        #enter-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Nền tối nhẹ */
+            z-index: 9999; /* Cao nhất, che phủ tất cả */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.8s ease-in-out; /* Hiệu ứng mờ dần khi tắt */
+            
+            /* Hiệu ứng làm mờ nội dung phía sau */
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .enter-text {
+            font-family: 'Cinzel', serif; /* Font chữ kiểu cổ điển sang trọng */
+            font-size: 24px;
+            color: #fff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 15px 30px;
+            border-radius: 5px;
+            animation: textPulse 2s infinite;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            user-select: none;
+        }
+
+        @keyframes textPulse {
+            0% { opacity: 0.6; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); text-shadow: 0 0 20px var(--primary-color); border-color: var(--primary-color); }
+            100% { opacity: 0.6; transform: scale(0.95); }
         }
 
         /* --- BACKGROUND ĐỘNG (CANVAS) --- */
         #canvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 999; /* Dưới màn hình chờ, trên hồ sơ */
+            pointer-events: none; 
         }
 
-        /* --- THẺ CARD CHÍNH (GLASSMORPHISM) --- */
+        /* --- THẺ CARD CHÍNH --- */
         .card {
             position: relative;
             z-index: 10;
@@ -65,9 +99,16 @@
             padding: 40px 20px;
             text-align: center;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1.5s ease;
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            /* Bỏ animation fadeIn cũ đi để tránh xung đột với màn hình chờ */
+            opacity: 0; /* Ẩn đi ban đầu */
+            transform: scale(0.9);
+            transition: all 1s ease; /* Hiện lên từ từ */
+        }
+
+        /* Class để hiện card sau khi bấm Enter */
+        .card.show {
+            opacity: 1;
+            transform: scale(1);
         }
 
         /* Avatar */
@@ -88,156 +129,96 @@
             transition: transform 0.5s;
         }
 
-        .avatar:hover {
-            transform: scale(1.05) rotate(5deg);
-        }
+        .avatar:hover { transform: scale(1.05) rotate(5deg); }
 
-        /* Status tích xanh */
         .verify-icon {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background: #fff;
-            color: #1877F2;
-            border-radius: 50%;
-            font-size: 18px;
-            border: 2px solid #fff;
+            position: absolute; bottom: 5px; right: 5px;
+            background: #fff; color: #1877F2;
+            border-radius: 50%; font-size: 18px; border: 2px solid #fff;
         }
 
         /* Tên và Mô tả */
         .name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
+            font-size: 24px; font-weight: 700; margin-bottom: 5px;
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
-        .bio {
-            font-size: 14px;
-            color: #ccc;
-            margin-bottom: 25px;
-            min-height: 20px; /* Giữ chỗ cho hiệu ứng gõ chữ */
-        }
+        .bio { font-size: 14px; color: #ccc; margin-bottom: 25px; min-height: 20px; }
 
         /* Danh sách Link */
-        .social-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        .social-links { list-style: none; display: flex; flex-direction: column; gap: 15px; }
 
         .link-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            text-decoration: none;
-            color: #fff;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 20px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px;
+            text-decoration: none; color: #fff; transition: all 0.3s ease; font-weight: 600;
         }
 
         .link-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 242, 255, 0.2);
-            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.15); transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 242, 255, 0.2); border-color: var(--primary-color);
         }
 
-        .link-icon {
-            font-size: 20px;
-            width: 30px;
-        }
-
-        .link-text {
-            flex: 1;
-            text-align: center;
-        }
+        .link-icon { font-size: 20px; width: 30px; }
+        .link-text { flex: 1; text-align: center; }
 
         /* Footer */
-        .footer {
-            margin-top: 30px;
-            font-size: 12px;
-            color: #888;
-        }
-
-        /* Hiệu ứng Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .footer { margin-top: 30px; font-size: 12px; color: #888; }
 
         /* Music Player Nhỏ */
-        .music-control {
-            margin-top: 20px;
-            cursor: pointer;
-            font-size: 20px;
-            animation: pulse 2s infinite;
-        }
-
+        .music-control { margin-top: 20px; cursor: pointer; font-size: 20px; animation: pulse 2s infinite; }
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.8; }
             50% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 10px var(--primary-color); }
             100% { transform: scale(1); opacity: 0.8; }
         }
-        
-        /* Mobile responsive */
-        @media (max-width: 480px) {
-            .card {
-                width: 95%;
-                padding: 30px 15px;
-            }
-        }
+
+        @media (max-width: 480px) { .card { width: 95%; padding: 30px 15px; } }
     </style>
 </head>
 <body>
+    
+    <!-- MÀN HÌNH CHỜ (CLICK TO ENTER) -->
+    <div id="enter-screen">
+        <div class="enter-text">Click To Enter</div>
+    </div>
 
     <!-- Background Canvas -->
     <canvas id="canvas"></canvas>
 
     <!-- Thẻ Profile Chính -->
-    <div class="card">
+    <div class="card" id="profile-card">
         <div class="avatar-container">
-            <!-- Thay link ảnh đại diện của bạn ở đây -->
+            <!-- Thay ảnh avatar -->
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIiv65c-dDBUHSS5ljNgNr74VU2w6n1RfJHb75t7s&s=0" alt="Avatar" class="avatar">
             <i class="fas fa-check-circle verify-icon"></i>
         </div>
 
         <h1 class="name">Thế Anh</h1>
-        
-        <!-- Hiệu ứng gõ chữ -->
         <p class="bio">I am a <span id="typewriter"></span></p>
 
         <div class="social-links">
-            <!-- Link Facebook -->
             <a href="https://www.facebook.com/profile.php?id=61566035506169" target="_blank" class="link-item">
                 <i class="fab fa-facebook-f link-icon" style="color: #1877F2;"></i>
                 <span class="link-text">Facebook</span>
                 <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
             </a>
 
-            <!-- Link Tiktok -->
             <a href="https://vm.tiktok.com/ZSHENWJYf5ehC-430En/" target="_blank" class="link-item">
                 <i class="fab fa-tiktok link-icon" style="color: #fff;"></i>
                 <span class="link-text">TikTok</span>
                 <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
             </a>
-            
         </div>
 
-        <!-- Trình phát nhạc -->
         <div class="music-control" onclick="toggleMusic()">
             <i id="music-icon" class="fas fa-play"></i>
         </div>
-        <!-- Link nhạc mp3 (Thay link nhạc của bạn vào src) -->
+
+        <!-- Link nhạc mp3 -->
         <audio id="bg-music" loop>
             <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         </audio>
@@ -248,42 +229,35 @@
     </div>
 
     <script>
-        /* --- HIỆU ỨNG GÕ CHỮ (TYPEWRITER) --- */
-        const textElement = document.getElementById('typewriter');
-        const phrases = ["Web Developer", "Designer", "Gamer", "Freelancer"];
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function typeEffect() {
-            const currentPhrase = phrases[phraseIndex];
-            
-            if (isDeleting) {
-                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            if (!isDeleting && charIndex === currentPhrase.length) {
-                isDeleting = true;
-                setTimeout(typeEffect, 2000); // Dừng lại 2s khi gõ xong
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                setTimeout(typeEffect, 500);
-            } else {
-                setTimeout(typeEffect, isDeleting ? 100 : 200);
-            }
-        }
-        typeEffect();
-
-        /* --- XỬ LÝ NHẠC --- */
+        /* --- XỬ LÝ MÀN HÌNH CHỜ --- */
+        const enterScreen = document.getElementById('enter-screen');
+        const profileCard = document.getElementById('profile-card');
         const music = document.getElementById('bg-music');
         const musicIcon = document.getElementById('music-icon');
         let isPlaying = false;
 
+        // Khi người dùng click vào màn hình chờ
+        enterScreen.addEventListener('click', () => {
+            // 1. Làm mờ và ẩn màn hình chờ
+            enterScreen.style.opacity = '0';
+            setTimeout(() => {
+                enterScreen.style.display = 'none';
+            }, 800);
+
+            // 2. Hiện hồ sơ lên
+            profileCard.classList.add('show');
+
+            // 3. Tự động phát nhạc
+            music.play().then(() => {
+                isPlaying = true;
+                musicIcon.className = 'fas fa-pause';
+                musicIcon.style.color = 'var(--primary-color)';
+            }).catch(error => {
+                console.log("Trình duyệt chặn phát nhạc tự động, cần tương tác thêm.");
+            });
+        });
+
+        /* --- XỬ LÝ NHẠC THỦ CÔNG --- */
         function toggleMusic() {
             if (isPlaying) {
                 music.pause();
@@ -297,79 +271,106 @@
             isPlaying = !isPlaying;
         }
 
-        /* --- HIỆU ỨNG BACKGROUND (CANVAS PARTICLES) --- */
+        /* --- HIỆU ỨNG GÕ CHỮ --- */
+        const textElement = document.getElementById('typewriter');
+        const phrases = ["Web Developer", "Designer", "Gamer", "Freelancer"];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeEffect() {
+            const currentPhrase = phrases[phraseIndex];
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, 2000); 
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(typeEffect, 500);
+            } else {
+                setTimeout(typeEffect, isDeleting ? 100 : 200);
+            }
+        }
+        typeEffect();
+
+        /* --- HIỆU ỨNG TUYẾT RƠI (PHỦ TRÊN CÙNG) --- */
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let particlesArray;
+        let snowflakes = [];
 
-        // Xử lý resize màn hình
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
-
-        class Particle {
+        class Snowflake {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2; // Hạt nhỏ thôi cho tinh tế
-                this.speedX = (Math.random() * 1) - 0.5;
-                this.speedY = (Math.random() * 1) - 0.5;
+                this.radius = Math.random() * 3 + 1; 
+                this.speed = Math.random() * 1 + 0.5;
+                this.wind = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.3;
             }
+
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(0, 242, 255, 0.5)'; // Màu hạt (cyan)
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+                this.y += this.speed;
+                this.x += this.wind;
 
-        function init() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.width * canvas.height) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-                
-                // Nối các hạt lại nếu gần nhau
-                for (let j = i; j < particlesArray.length; j++) {
-                    const dx = particlesArray[i].x - particlesArray[j].x;
-                    const dy = particlesArray[i].y - particlesArray[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${0.1 - distance/1000})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
-                        ctx.stroke();
-                    }
+                if (this.y > canvas.height) {
+                    this.y = 0;
+                    this.x = Math.random() * canvas.width;
                 }
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
             }
-            requestAnimationFrame(animate);
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = "white";
+                ctx.fill();
+                ctx.closePath();
+                ctx.shadowBlur = 0; 
+            }
         }
 
-        init();
-        animate();
+        function initSnow() {
+            snowflakes = [];
+            let numberOfSnowflakes = (canvas.width * canvas.height) / 8000; 
+            for (let i = 0; i < numberOfSnowflakes; i++) {
+                snowflakes.push(new Snowflake());
+            }
+        }
 
-        /* --- TITLE CHẠY (MARQUEE) --- */
+        function animateSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < snowflakes.length; i++) {
+                snowflakes[i].update();
+                snowflakes[i].draw();
+            }
+            requestAnimationFrame(animateSnow);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initSnow();
+        });
+
+        initSnow();
+        animateSnow();
+
+        /* --- TITLE CHẠY --- */
         let titleText = "Thế Anh Profile - Welcome to my world - ";
         function scrollTitle() {
             titleText = titleText.substring(1) + titleText.substring(0, 1);
@@ -378,7 +379,6 @@
         }
         scrollTitle();
 
-        /* --- CHỐNG CLICK CHUỘT PHẢI (OPTIONAL) --- */
         document.addEventListener('contextmenu', event => event.preventDefault());
     </script>
 </body>
