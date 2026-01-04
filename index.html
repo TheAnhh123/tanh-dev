@@ -11,6 +11,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
         /* --- CẤU HÌNH CƠ BẢN --- */
@@ -44,21 +45,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Nền tối nhẹ */
-            z-index: 9999; /* Cao nhất, che phủ tất cả */
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: opacity 0.8s ease-in-out; /* Hiệu ứng mờ dần khi tắt */
-            
-            /* Hiệu ứng làm mờ nội dung phía sau */
+            transition: opacity 0.8s ease-in-out;
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px);
         }
 
         .enter-text {
-            font-family: 'Cinzel', serif; /* Font chữ kiểu cổ điển sang trọng */
+            font-family: 'Cinzel', serif;
             font-size: 24px;
             color: #fff;
             letter-spacing: 3px;
@@ -81,7 +80,7 @@
         #canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 999; /* Dưới màn hình chờ, trên hồ sơ */
+            z-index: 999;
             pointer-events: none; 
         }
 
@@ -99,13 +98,11 @@
             padding: 40px 20px;
             text-align: center;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            /* Bỏ animation fadeIn cũ đi để tránh xung đột với màn hình chờ */
-            opacity: 0; /* Ẩn đi ban đầu */
+            opacity: 0;
             transform: scale(0.9);
-            transition: all 1s ease; /* Hiện lên từ từ */
+            transition: all 1s ease;
         }
 
-        /* Class để hiện card sau khi bấm Enter */
         .card.show {
             opacity: 1;
             transform: scale(1);
@@ -165,11 +162,37 @@
         .link-icon { font-size: 20px; width: 30px; }
         .link-text { flex: 1; text-align: center; }
 
+        /* --- BỘ ĐẾM GIỜ (CLOCK STYLE) --- */
+        .clock-container {
+            margin-top: 25px;
+            padding: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .clock-time {
+            font-family: 'Orbitron', sans-serif; /* Font kỹ thuật số */
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .clock-date {
+            font-size: 13px;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         /* Footer */
-        .footer { margin-top: 30px; font-size: 12px; color: #888; }
+        .footer { margin-top: 20px; font-size: 12px; color: #888; }
 
         /* Music Player Nhỏ */
         .music-control { margin-top: 20px; cursor: pointer; font-size: 20px; animation: pulse 2s infinite; }
+
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.8; }
             50% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 10px var(--primary-color); }
@@ -212,6 +235,12 @@
                 <span class="link-text">TikTok</span>
                 <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
             </a>
+        </div>
+
+        <!-- BỘ ĐẾM GIỜ MỚI -->
+        <div class="clock-container">
+            <div id="digital-clock" class="clock-time">00:00:00</div>
+            <div id="calendar-date" class="clock-date">Loading...</div>
         </div>
 
         <div class="music-control" onclick="toggleMusic()">
@@ -271,6 +300,32 @@
             isPlaying = !isPlaying;
         }
 
+        /* --- BỘ ĐẾM GIỜ (CLOCK LOGIC) --- */
+        function updateClock() {
+            const now = new Date();
+            
+            // Xử lý Giờ:Phút:Giây
+            let h = now.getHours();
+            let m = now.getMinutes();
+            let s = now.getSeconds();
+            
+            // Thêm số 0 vào trước nếu < 10 (ví dụ: 09 thay vì 9)
+            h = h < 10 ? '0' + h : h;
+            m = m < 10 ? '0' + m : m;
+            s = s < 10 ? '0' + s : s;
+            
+            document.getElementById('digital-clock').innerText = `${h}:${m}:${s}`;
+            
+            // Xử lý Ngày tháng
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString('vi-VN', dateOptions);
+            document.getElementById('calendar-date').innerText = dateString;
+        }
+
+        // Chạy đồng hồ ngay lập tức và cập nhật mỗi 1000ms (1 giây)
+        setInterval(updateClock, 1000);
+        updateClock();
+
         /* --- HIỆU ỨNG GÕ CHỮ --- */
         const textElement = document.getElementById('typewriter');
         const phrases = ["Web Developer", "Designer", "Gamer", "Freelancer"];
@@ -280,6 +335,7 @@
 
         function typeEffect() {
             const currentPhrase = phrases[phraseIndex];
+            
             if (isDeleting) {
                 textElement.textContent = currentPhrase.substring(0, charIndex - 1);
                 charIndex--;
