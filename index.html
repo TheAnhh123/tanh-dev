@@ -2,440 +2,393 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thế Anh Profile</title>
-    
-    <!-- Font Awesome -->
+    <title>@ng the anh</title>
+    <!-- Icon Website (Gojo) -->
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-MTXMQmc-qoI8tC4L83xG20JU5gqFJcVIzVf8G4o&s=0" type="image/png">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- CẤU HÌNH CƠ BẢN --- */
-        :root {
-            --primary-color: #00f2ff;
-            --secondary-color: #bc13fe;
-            --bg-color: #0f0c29;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-color: #ffffff;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        /* --- CẤU HÌNH CHUNG --- */
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; 
-            color: var(--text-color);
-            position: relative;
+            font-family: 'Quicksand', sans-serif;
+            background-color: #000;
+            color: white;
+            margin: 0;
+            /* Cho phép cuộn trang nếu nội dung dài */
+            overflow-y: auto; 
+            overflow-x: hidden;
         }
 
-        /* --- MÀN HÌNH CHỜ (CLICK TO ENTER) --- */
-        #enter-screen {
+        /* Ẩn thanh cuộn khi Welcome Screen đang hiện */
+        body.locked {
+            overflow: hidden;
+        }
+
+        /* Hình nền Video/Ảnh */
+        #bg-fixed {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+            /* Bạn có thể thay đổi link ảnh nền tại đây */
+            background-image: url('https://media.tenor.com/dvWbEudoAgYAAAAM/gojo-gojo-satoru.gif'); 
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.5); /* Làm tối nền */
+        }
+
+        /* --- HIỆU ỨNG TUYẾT RƠI (CHẬM) --- */
+        .snowflake {
+            position: fixed;
+            top: -20px;
+            color: white;
+            font-family: Arial;
+            text-shadow: 0 0 2px #000;
             z-index: 9999;
+            pointer-events: none;
+            animation-name: fall, sway;
+            animation-timing-function: linear, ease-in-out;
+            animation-iteration-count: infinite, infinite;
+        }
+
+        @keyframes fall {
+            0% { top: -10%; opacity: 0.8; }
+            100% { top: 110%; opacity: 0; }
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(25px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* --- WELCOME SCREEN MỚI --- */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
-            transition: opacity 0.8s ease-in-out;
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
+            flex-direction: column;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s;
         }
 
-        .enter-text {
-            font-family: 'Cinzel', serif;
-            font-size: 24px;
-            color: #fff;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 15px 30px;
-            border-radius: 5px;
-            animation: textPulse 2s infinite;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-            user-select: none;
-        }
-
-        @keyframes textPulse {
-            0% { opacity: 0.6; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1); text-shadow: 0 0 20px var(--primary-color); border-color: var(--primary-color); }
-            100% { opacity: 0.6; transform: scale(0.95); }
-        }
-
-        /* --- BACKGROUND ĐỘNG (CANVAS) --- */
-        #canvas {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 999;
-            pointer-events: none; 
-        }
-
-        /* --- THẺ CARD CHÍNH --- */
-        .card {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 400px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        #welcome-screen.slide-up {
+            transform: translateY(-100%);
             opacity: 0;
-            transform: scale(0.9);
-            transition: all 1s ease;
+            pointer-events: none;
         }
 
-        .card.show {
-            opacity: 1;
-            transform: scale(1);
+        .enter-btn {
+            padding: 15px 40px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            background: rgba(255,255,255,0.05);
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
         }
 
-        /* Avatar */
+        .enter-btn:hover {
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 30px rgba(255,255,255,0.4);
+            transform: scale(1.05);
+            letter-spacing: 5px;
+        }
+
+        /* --- AVATAR FRAME VIP --- */
         .avatar-container {
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .avatar {
-            width: 100%;
-            height: 100%;
+        .avatar-img {
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px var(--primary-color);
-            transition: transform 0.5s;
+            z-index: 2;
+            border: 4px solid #1a1a1a;
         }
 
-        .avatar:hover { transform: scale(1.05) rotate(5deg); }
-
-        .verify-icon {
-            position: absolute; bottom: 5px; right: 5px;
-            background: #fff; color: #1877F2;
-            border-radius: 50%; font-size: 18px; border: 2px solid #fff;
+        /* Vòng xoay 7 màu */
+        .spin-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            animation: spin 4s linear infinite;
+            filter: blur(2px);
+            z-index: 1;
+        }
+        
+        .spin-border::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 146px; /* Nhỏ hơn container 1 xíu để lộ viền */
+            height: 146px;
+            background: #000;
+            border-radius: 50%;
+            z-index: -1;
         }
 
-        /* Tên và Mô tả */
-        .name {
-            font-size: 24px; font-weight: 700; margin-bottom: 5px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-transform: uppercase; letter-spacing: 1px;
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
 
-        .bio { font-size: 14px; color: #ccc; margin-bottom: 25px; min-height: 20px; }
+        /* --- GLASS CARD --- */
+        .glass-card {
+            background: rgba(30, 30, 30, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
 
-        /* Danh sách Link */
-        .social-links { list-style: none; display: flex; flex-direction: column; gap: 15px; }
-
+        /* --- HIỆU ỨNG LIÊN KẾT --- */
         .link-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 20px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px;
-            text-decoration: none; color: #fff; transition: all 0.3s ease; font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
-
-        .link-item:hover {
-            background: rgba(255, 255, 255, 0.15); transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 242, 255, 0.2); border-color: var(--primary-color);
+        .link-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
         }
-
-        .link-icon { font-size: 20px; width: 30px; }
-        .link-text { flex: 1; text-align: center; }
-
-        /* --- BỘ ĐẾM GIỜ (CLOCK STYLE) --- */
-        .clock-container {
-            margin-top: 25px;
-            padding: 10px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .link-item:hover::before {
+            left: 100%;
         }
-
-        .clock-time {
-            font-family: 'Orbitron', sans-serif; /* Font kỹ thuật số */
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-shadow: 0 0 15px var(--primary-color);
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+        
+        /* Tick xanh */
+        .tick-blue {
+            color: #3b82f6;
+            background: white;
+            border-radius: 50%;
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            text-align: center;
+            line-height: 16px;
+            font-size: 10px;
+            vertical-align: middle;
+            margin-left: 5px;
         }
-
-        .clock-date {
-            font-size: 13px;
-            color: #ccc;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Footer */
-        .footer { margin-top: 20px; font-size: 12px; color: #888; }
-
-        /* Music Player Nhỏ */
-        .music-control { margin-top: 20px; cursor: pointer; font-size: 20px; animation: pulse 2s infinite; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 10px var(--primary-color); }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        @media (max-width: 480px) { .card { width: 95%; padding: 30px 15px; } }
     </style>
 </head>
-<body>
-    
-    <!-- MÀN HÌNH CHỜ (CLICK TO ENTER) -->
-    <div id="enter-screen">
-        <div class="enter-text">Click To Enter</div>
-    </div>
+<body class="locked">
 
-    <!-- Background Canvas -->
-    <canvas id="canvas"></canvas>
+    <!-- Hình nền cố định -->
+    <div id="bg-fixed"></div>
 
-    <!-- Thẻ Profile Chính -->
-    <div class="card" id="profile-card">
-        <div class="avatar-container">
-            <!-- Thay ảnh avatar -->
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIiv65c-dDBUHSS5ljNgNr74VU2w6n1RfJHb75t7s&s=0" alt="Avatar" class="avatar">
-            <i class="fas fa-check-circle verify-icon"></i>
-        </div>
-
-        <h1 class="name">Thế Anh</h1>
-        <p class="bio">I am a <span id="typewriter"></span></p>
-
-        <div class="social-links">
-            <a href="https://www.facebook.com/profile.php?id=61566035506169" target="_blank" class="link-item">
-                <i class="fab fa-facebook-f link-icon" style="color: #1877F2;"></i>
-                <span class="link-text">Facebook</span>
-                <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
-            </a>
-
-            <a href="https://vm.tiktok.com/ZSHENWJYf5ehC-430En/" target="_blank" class="link-item">
-                <i class="fab fa-tiktok link-icon" style="color: #fff;"></i>
-                <span class="link-text">TikTok</span>
-                <i class="fas fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
-            </a>
-        </div>
-
-        <!-- BỘ ĐẾM GIỜ MỚI -->
-        <div class="clock-container">
-            <div id="digital-clock" class="clock-time">00:00:00</div>
-            <div id="calendar-date" class="clock-date">Loading...</div>
-        </div>
-
-        <div class="music-control" onclick="toggleMusic()">
-            <i id="music-icon" class="fas fa-play"></i>
-        </div>
-
-        <!-- Link nhạc mp3 -->
-        <audio id="bg-music" loop>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        </audio>
-
-        <div class="footer">
-            <p>© 2025 The Anh. All rights reserved.</p>
+    <!-- MÀN HÌNH CHÀO MỪNG -->
+    <div id="welcome-screen">
+        <div class="relative group cursor-pointer" onclick="enterSite()">
+            <!-- Ảnh đại diện nhỏ ở Welcome -->
+            <img src="https://i.pinimg.com/originals/7a/2b/8a/7a2b8a6aac5f175f073e4035b753b923.gif" 
+                 class="w-24 h-24 rounded-full border-2 border-white/50 mx-auto mb-6 shadow-[0_0_30px_rgba(255,255,255,0.3)] animate-pulse object-cover">
+            
+            <div class="enter-btn text-white">
+                CLICK TO ENTER
+            </div>
+            <p class="text-gray-400 text-sm mt-4 text-center tracking-widest opacity-80">THE ANH PROFILE</p>
         </div>
     </div>
+
+    <!-- NỘI DUNG CHÍNH (Có thể cuộn) -->
+    <div id="main-content" class="min-h-screen flex flex-col items-center py-10 px-4 opacity-0 transition-opacity duration-1000 scale-95">
+        
+        <!-- Card Profile -->
+        <div class="glass-card w-full max-w-md p-0 rounded-3xl relative overflow-hidden mb-10">
+            
+            <!-- Cover Photo -->
+            <div class="h-32 w-full bg-[url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070')] bg-cover bg-center relative">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(30,30,30,0.9)]"></div>
+            </div>
+
+            <div class="px-6 pb-8 -mt-16 flex flex-col items-center text-center relative z-10">
+                
+                <!-- Avatar VIP Frame -->
+                <div class="avatar-container mb-3">
+                    <div class="spin-border"></div>
+                    <img src="https://i.pinimg.com/originals/7a/2b/8a/7a2b8a6aac5f175f073e4035b753b923.gif" alt="Avatar" class="avatar-img">
+                    <!-- Status Online -->
+                    <div class="absolute bottom-4 right-4 w-4 h-4 bg-green-500 rounded-full border-2 border-[#1a1a1a] z-10 animate-ping"></div>
+                    <div class="absolute bottom-4 right-4 w-4 h-4 bg-green-500 rounded-full border-2 border-[#1a1a1a] z-10"></div>
+                </div>
+
+                <!-- Tên & Info -->
+                <h1 class="text-2xl font-bold text-white flex items-center justify-center gap-1">
+                    NgThAnh<i class="fa-solid fa-check-circle tick-blue"></i>
+                </h1>
+                
+                <p class="text-sm text-gray-400 mt-1 mb-4 max-w-[80%]">
+                    "Hi everyone, I am The Anh, I like write code"
+                </p>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap justify-center gap-2 mb-6">
+                    <span class="px-3 py-1 bg-white/10 rounded-full text-xs border border-white/10 hover:bg-white/20 transition">Developer</span>
+                    <span class="px-3 py-1 bg-white/10 rounded-full text-xs border border-white/10 hover:bg-white/20 transition">Designer</span>
+                    <span class="px-3 py-1 bg-white/10 rounded-full text-xs border border-white/10 hover:bg-white/20 transition">Gamer</span>
+                </div>
+
+                <!-- Danh sách Link -->
+                <div class="w-full space-y-3">
+                    
+                    <!-- Facebook (Giữ nguyên) -->
+                    <a href="https://www.facebook.com/profile.php?id=61566035506169" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-[#1877F2]/20 border border-[#1877F2]/50 hover:bg-[#1877F2]/40 transition group">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1877F2] text-xl mr-3 shadow-lg">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </div>
+                        <div class="text-left flex-1">
+                            <h3 class="font-bold text-sm text-white">Facebook</h3>
+                            <p class="text-[10px] text-gray-300">My profile Facebook</p>
+                        </div>
+                        <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
+                    </a>
+
+                    <!-- TikTok (Mới) -->
+                     <a href="https://vm.tiktok.com/ZSHEKjaDe2kKY-IlWS3/" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-black/40 border border-gray-600/50 hover:bg-black/60 transition group">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black text-lg mr-3 shadow-lg">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </div>
+                        <div class="text-left flex-1">
+                            <h3 class="font-bold text-sm text-white">TikTok</h3>
+                            <p class="text-[10px] text-gray-300">My profile Tiktok</p>
+                        </div>
+                        <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
+                    </a>
+
+                    <!-- GitHub (Mới) -->
+                    <a href="https://github.com/TheAnhh123" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-gray-800/40 border border-gray-500/50 hover:bg-gray-800/60 transition group">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-900 text-xl mr-3 shadow-lg">
+                            <i class="fa-brands fa-github"></i>
+                        </div>
+                        <div class="text-left flex-1">
+                            <h3 class="font-bold text-sm text-white">GitHub</h3>
+                            <p class="text-[10px] text-gray-300">My profile Github</p>
+                        </div>
+                        <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
+                    </a>
+
+                </div>
+
+            </div>
+            
+            <!-- Footer trong card -->
+            <div class="bg-black/20 p-3 text-center text-[10px] text-gray-500 uppercase tracking-widest">
+                Developed by TheAnh
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <p class="text-gray-500 text-xs">© 2024 All Rights Reserved</p>
+
+    </div>
+
+    <!-- Nhạc nền -->
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        /* --- XỬ LÝ MÀN HÌNH CHỜ --- */
-        const enterScreen = document.getElementById('enter-screen');
-        const profileCard = document.getElementById('profile-card');
-        const music = document.getElementById('bg-music');
-        const musicIcon = document.getElementById('music-icon');
-        let isPlaying = false;
+        /* --- XỬ LÝ WELCOME SCREEN --- */
+        function enterSite() {
+            const welcome = document.getElementById('welcome-screen');
+            const main = document.getElementById('main-content');
+            const body = document.body;
+            const music = document.getElementById('bg-music');
 
-        // Khi người dùng click vào màn hình chờ
-        enterScreen.addEventListener('click', () => {
-            // 1. Làm mờ và ẩn màn hình chờ
-            enterScreen.style.opacity = '0';
+            // Hiệu ứng trượt lên
+            welcome.classList.add('slide-up');
+            
+            // Hiện nội dung chính
             setTimeout(() => {
-                enterScreen.style.display = 'none';
-            }, 800);
+                main.classList.remove('opacity-0', 'scale-95');
+                body.classList.remove('locked'); // Mở khoá cuộn trang
+            }, 300);
 
-            // 2. Hiện hồ sơ lên
-            profileCard.classList.add('show');
-
-            // 3. Tự động phát nhạc
-            music.play().then(() => {
-                isPlaying = true;
-                musicIcon.className = 'fas fa-pause';
-                musicIcon.style.color = 'var(--primary-color)';
-            }).catch(error => {
-                console.log("Trình duyệt chặn phát nhạc tự động, cần tương tác thêm.");
-            });
-        });
-
-        /* --- XỬ LÝ NHẠC THỦ CÔNG --- */
-        function toggleMusic() {
-            if (isPlaying) {
-                music.pause();
-                musicIcon.className = 'fas fa-play';
-                musicIcon.style.color = '#fff';
-            } else {
-                music.play();
-                musicIcon.className = 'fas fa-pause';
-                musicIcon.style.color = 'var(--primary-color)';
-            }
-            isPlaying = !isPlaying;
+            // Phát nhạc
+            music.volume = 0.4;
+            music.play().catch(e => console.log("Cần tương tác để phát nhạc"));
         }
 
-        /* --- BỘ ĐẾM GIỜ (CLOCK LOGIC) --- */
-        function updateClock() {
-            const now = new Date();
+        /* --- HIỆU ỨNG TUYẾT RƠI (ĐÃ CHỈNH CHẬM) --- */
+        const snowSymbols = ['❄', '❅', '❆', '•']; 
+        
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
             
-            // Xử lý Giờ:Phút:Giây
-            let h = now.getHours();
-            let m = now.getMinutes();
-            let s = now.getSeconds();
+            // Chọn ngẫu nhiên biểu tượng
+            snowflake.textContent = snowSymbols[Math.floor(Math.random() * snowSymbols.length)];
             
-            // Thêm số 0 vào trước nếu < 10 (ví dụ: 09 thay vì 9)
-            h = h < 10 ? '0' + h : h;
-            m = m < 10 ? '0' + m : m;
-            s = s < 10 ? '0' + s : s;
+            // Vị trí ngang ngẫu nhiên
+            snowflake.style.left = Math.random() * 100 + 'vw';
             
-            document.getElementById('digital-clock').innerText = `${h}:${m}:${s}`;
+            // Kích thước ngẫu nhiên (nhỏ hơn để tinh tế)
+            const size = Math.random() * 15 + 8 + 'px'; 
+            snowflake.style.fontSize = size;
             
-            // Xử lý Ngày tháng
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const dateString = now.toLocaleDateString('vi-VN', dateOptions);
-            document.getElementById('calendar-date').innerText = dateString;
-        }
+            // Tốc độ rơi: Rất chậm (từ 8s đến 15s)
+            const fallDuration = Math.random() * 7 + 8 + 's'; 
+            // Tốc độ đung đưa
+            const swayDuration = Math.random() * 4 + 3 + 's';
 
-        // Chạy đồng hồ ngay lập tức và cập nhật mỗi 1000ms (1 giây)
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        /* --- HIỆU ỨNG GÕ CHỮ --- */
-        const textElement = document.getElementById('typewriter');
-        const phrases = ["Web Developer", "Designer", "Gamer", "Freelancer"];
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function typeEffect() {
-            const currentPhrase = phrases[phraseIndex];
+            snowflake.style.animationDuration = `${fallDuration}, ${swayDuration}`;
             
-            if (isDeleting) {
-                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
-                charIndex++;
-            }
+            // Độ mờ
+            snowflake.style.opacity = Math.random() * 0.7 + 0.3;
 
-            if (!isDeleting && charIndex === currentPhrase.length) {
-                isDeleting = true;
-                setTimeout(typeEffect, 2000); 
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                setTimeout(typeEffect, 500);
-            } else {
-                setTimeout(typeEffect, isDeleting ? 100 : 200);
-            }
-        }
-        typeEffect();
+            document.body.appendChild(snowflake);
 
-        /* --- HIỆU ỨNG TUYẾT RƠI (PHỦ TRÊN CÙNG) --- */
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let snowflakes = [];
-
-        class Snowflake {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.radius = Math.random() * 3 + 1; 
-                this.speed = Math.random() * 1 + 0.5;
-                this.wind = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5 + 0.3;
-            }
-
-            update() {
-                this.y += this.speed;
-                this.x += this.wind;
-
-                if (this.y > canvas.height) {
-                    this.y = 0;
-                    this.x = Math.random() * canvas.width;
-                }
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.shadowBlur = 5;
-                ctx.shadowColor = "white";
-                ctx.fill();
-                ctx.closePath();
-                ctx.shadowBlur = 0; 
-            }
+            // Xóa sau khi rơi xong
+            setTimeout(() => {
+                snowflake.remove();
+            }, 15000); // 15s
         }
 
-        function initSnow() {
-            snowflakes = [];
-            let numberOfSnowflakes = (canvas.width * canvas.height) / 8000; 
-            for (let i = 0; i < numberOfSnowflakes; i++) {
-                snowflakes.push(new Snowflake());
-            }
-        }
-
-        function animateSnow() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < snowflakes.length; i++) {
-                snowflakes[i].update();
-                snowflakes[i].draw();
-            }
-            requestAnimationFrame(animateSnow);
-        }
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initSnow();
-        });
-
-        initSnow();
-        animateSnow();
-
-        /* --- TITLE CHẠY --- */
-        let titleText = "Thế Anh Profile - Welcome to my world - ";
-        function scrollTitle() {
-            titleText = titleText.substring(1) + titleText.substring(0, 1);
-            document.title = titleText;
-            setTimeout(scrollTitle, 200);
-        }
-        scrollTitle();
-
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        // Tạo tuyết thưa hơn
+        setInterval(createSnowflake, 300);
     </script>
 </body>
 </html>
