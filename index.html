@@ -21,7 +21,6 @@
             background-color: #000;
             color: white;
             margin: 0;
-            /* Cho phép cuộn trang nếu nội dung dài */
             overflow-y: auto; 
             overflow-x: hidden;
         }
@@ -39,7 +38,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            /* Bạn có thể thay đổi link ảnh nền tại đây */
+            /* Ảnh nền Gojo */
             background-image: url('https://media.tenor.com/dvWbEudoAgYAAAAM/gojo-gojo-satoru.gif'); 
             background-size: cover;
             background-position: center;
@@ -117,7 +116,7 @@
             letter-spacing: 5px;
         }
 
-        /* --- AVATAR FRAME VIP --- */
+        /* --- AVATAR FRAME VIP (STYLE HOANGQUAN) --- */
         .avatar-container {
             position: relative;
             width: 150px;
@@ -129,15 +128,15 @@
         }
 
         .avatar-img {
-            width: 140px;
-            height: 140px;
+            width: 135px; /* Nhỏ lại xíu để lộ viền */
+            height: 135px;
             border-radius: 50%;
             object-fit: cover;
             z-index: 2;
-            border: 4px solid #1a1a1a;
+            border: 3px solid #1a1a1a; /* Viền đen sát ảnh */
         }
 
-        /* Vòng xoay 7 màu */
+        /* Viền xoay nét đứt */
         .spin-border {
             position: absolute;
             top: 0;
@@ -145,26 +144,28 @@
             right: 0;
             bottom: 0;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
-            animation: spin 4s linear infinite;
-            filter: blur(2px);
+            border: 2px dashed rgba(255, 255, 255, 0.6); 
+            border-top: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            animation: spin 8s linear infinite;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
             z-index: 1;
         }
         
         .spin-border::before {
             content: "";
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 146px; /* Nhỏ hơn container 1 xíu để lộ viền */
-            height: 146px;
-            background: #000;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
             border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             z-index: -1;
         }
 
         @keyframes spin {
+            0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
@@ -223,11 +224,11 @@
     <div id="welcome-screen">
         <div class="relative group cursor-pointer" onclick="enterSite()">
             <!-- Ảnh đại diện nhỏ ở Welcome -->
-            <img src="https://i.pinimg.com/originals/7a/2b/8a/7a2b8a6aac5f175f073e4035b753b923.gif" 
+            <img src="https://media.tenor.com/nDp-K4NXOS4AAAAM/%D0%B3%D0%BE%D0%B4%D0%B6%D0%BE.gif" 
                  class="w-24 h-24 rounded-full border-2 border-white/50 mx-auto mb-6 shadow-[0_0_30px_rgba(255,255,255,0.3)] animate-pulse object-cover">
             
             <div class="enter-btn text-white">
-                CLICK TO ENTER
+                CLICK TO CONTINUE
             </div>
             <p class="text-gray-400 text-sm mt-4 text-center tracking-widest opacity-80">THE ANH PROFILE</p>
         </div>
@@ -239,9 +240,11 @@
         <!-- Card Profile -->
         <div class="glass-card w-full max-w-md p-0 rounded-3xl relative overflow-hidden mb-10">
             
-            <!-- Cover Photo -->
-            <div class="h-32 w-full bg-[url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070')] bg-cover bg-center relative">
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(30,30,30,0.9)]"></div>
+            <!-- Cover Photo (Đã sửa: TRONG SUỐT / MỜ) -->
+            <!-- Đổi bg-white -> bg-transparent hoặc bg-white/5 để mờ nhẹ -->
+            <div class="h-32 w-full bg-white/5 relative border-b border-white/5">
+                <!-- Gradient rất nhẹ -->
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.2)]"></div>
             </div>
 
             <div class="px-6 pb-8 -mt-16 flex flex-col items-center text-center relative z-10">
@@ -274,38 +277,38 @@
                 <!-- Danh sách Link -->
                 <div class="w-full space-y-3">
                     
-                    <!-- Facebook (Giữ nguyên) -->
+                    <!-- Facebook -->
                     <a href="https://www.facebook.com/profile.php?id=61566035506169" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-[#1877F2]/20 border border-[#1877F2]/50 hover:bg-[#1877F2]/40 transition group">
                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1877F2] text-xl mr-3 shadow-lg">
                             <i class="fa-brands fa-facebook-f"></i>
                         </div>
                         <div class="text-left flex-1">
                             <h3 class="font-bold text-sm text-white">Facebook</h3>
-                            <p class="text-[10px] text-gray-300">My profile Facebook</p>
+                            <p class="text-[10px] text-gray-300">My Profile Facebook</p>
                         </div>
                         <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
                     </a>
 
-                    <!-- TikTok (Mới) -->
+                    <!-- TikTok -->
                      <a href="https://vm.tiktok.com/ZSHEKjaDe2kKY-IlWS3/" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-black/40 border border-gray-600/50 hover:bg-black/60 transition group">
                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black text-lg mr-3 shadow-lg">
                             <i class="fa-brands fa-tiktok"></i>
                         </div>
                         <div class="text-left flex-1">
                             <h3 class="font-bold text-sm text-white">TikTok</h3>
-                            <p class="text-[10px] text-gray-300">My profile Tiktok</p>
+                            <p class="text-[10px] text-gray-300">My Profile Tiktok</p>
                         </div>
                         <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
                     </a>
 
-                    <!-- GitHub (Mới) -->
+                    <!-- GitHub -->
                     <a href="https://github.com/TheAnhh123" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-gray-800/40 border border-gray-500/50 hover:bg-gray-800/60 transition group">
                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-900 text-xl mr-3 shadow-lg">
                             <i class="fa-brands fa-github"></i>
                         </div>
                         <div class="text-left flex-1">
                             <h3 class="font-bold text-sm text-white">GitHub</h3>
-                            <p class="text-[10px] text-gray-300">My profile Github</p>
+                            <p class="text-[10px] text-gray-300">My Profile Github</p>
                         </div>
                         <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
                     </a>
@@ -352,7 +355,7 @@
             music.play().catch(e => console.log("Cần tương tác để phát nhạc"));
         }
 
-        /* --- HIỆU ỨNG TUYẾT RƠI (ĐÃ CHỈNH CHẬM) --- */
+        /* --- HIỆU ỨNG TUYẾT RƠI --- */
         const snowSymbols = ['❄', '❅', '❆', '•']; 
         
         function createSnowflake() {
