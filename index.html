@@ -155,8 +155,6 @@
         .link-item:hover::before {
             left: 100%;
         }
-        
-        /* Cải thiện căn giữa cho tên */
         .name-wrapper {
             display: flex;
             justify-content: center;
@@ -165,12 +163,10 @@
             height: 40px;
             margin-bottom: 4px;
         }
-        
         #name-typewriter {
             display: inline-block;
             white-space: pre;
         }
-        
         .cursor {
             display: inline-block;
             width: 2px;
@@ -188,7 +184,6 @@
 <body class="locked">
     <div id="bg-fixed"></div>
 
-    <!-- Màn hình chờ -->
     <div id="welcome-screen">
         <div class="relative group cursor-pointer" onclick="enterSite()">
             <img src="https://media.tenor.com/nDp-K4NXOS4AAAAM/%D0%B3%D0%BE%D0%B4%D0%B6%D0%BE.gif" 
@@ -198,11 +193,13 @@
         </div>
     </div>
 
-    <!-- Nội dung chính -->
     <div id="main-content" class="min-h-screen flex flex-col items-center py-10 px-4 opacity-0 transition-opacity duration-1000 scale-95">
         <div class="glass-card w-full max-w-md p-0 rounded-3xl relative overflow-hidden mb-10">
             <div class="h-32 w-full bg-white/5 relative border-b border-white/5">
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.2)]"></div>
+                <div id="vn-clock" class="absolute top-4 right-4 text-white font-mono text-sm bg-black/40 px-3 py-1 rounded-lg backdrop-blur-md border border-white/10 shadow-lg tracking-widest hover:bg-black/60 transition-colors">
+                    --:--:--
+                </div>
             </div>
             
             <div class="px-6 pb-8 -mt-16 flex flex-col items-center text-center relative z-10">
@@ -213,7 +210,6 @@
                     <div class="absolute bottom-4 right-4 w-4 h-4 bg-green-500 rounded-full border-2 border-[#1a1a1a] z-10"></div>
                 </div>
                 
-                <!-- Tên đã xóa tích xanh và căn giữa -->
                 <div class="name-wrapper">
                     <h1 class="text-2xl font-bold text-white flex items-center">
                         <span id="name-typewriter"></span><span class="cursor"></span>
@@ -224,14 +220,12 @@
                     "Hi everyone, I am The Anh, I like write code"
                 </p>
 
-                <!-- Tags -->
                 <div class="flex flex-wrap justify-center gap-2 mb-6">
                     <span class="px-3 py-1 bg-white/10 rounded-full text-xs border border-white/10">Developer</span>
                     <span class="px-3 py-1 bg-white/10 rounded-full text-xs border border-white/10">Designer</span>
                     <span class="px-3 py-1 bg-white/10 rounded-full text-xs border border-white/10">Gamer</span>
                 </div>
 
-                <!-- Links -->
                 <div class="w-full space-y-3">
                     <a href="https://www.facebook.com/profile.php?id=61566035506169" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-[#1877F2]/20 border border-[#1877F2]/50 hover:bg-[#1877F2]/40 transition group">
                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1877F2] text-xl mr-3 shadow-lg">
@@ -243,6 +237,7 @@
                         </div>
                         <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
                     </a>
+
                     <a href="https://vm.tiktok.com/ZSHEKjaDe2kKY-IlWS3/" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-black/40 border border-gray-600/50 hover:bg-black/60 transition group">
                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black text-lg mr-3 shadow-lg">
                             <i class="fa-brands fa-tiktok"></i>
@@ -253,6 +248,7 @@
                         </div>
                         <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
                     </a>
+
                     <a href="https://github.com/TheAnhh123" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-gray-800/40 border border-gray-500/50 hover:bg-gray-800/60 transition group">
                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-900 text-xl mr-3 shadow-lg">
                             <i class="fa-brands fa-github"></i>
@@ -263,8 +259,20 @@
                         </div>
                         <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
                     </a>
+
+                    <a href="https://www.roblox.com/vi/users/8820201890/profile" target="_blank" class="link-item flex items-center p-3 rounded-xl bg-[#DE3537]/20 border border-[#DE3537]/50 hover:bg-[#DE3537]/40 transition group">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3 shadow-lg overflow-hidden">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKRxk8NqGkb_6HnsBJiCjXV2DI3EIMgl4M_DBZa3s&s=0" alt="Roblox Logo" class="w-5 h-5 object-contain">
+                        </div>
+                        <div class="text-left flex-1">
+                            <h3 class="font-bold text-sm text-white">Roblox</h3>
+                            <p class="text-[10px] text-gray-300">My Profile Roblox</p>
+                        </div>
+                        <i class="fa-solid fa-angle-right text-white/50 group-hover:translate-x-1 transition"></i>
+                    </a>
                 </div>
             </div>
+
             <div class="bg-black/20 p-3 text-center text-[10px] text-gray-500 uppercase tracking-widest">
                 Developed by TheAnh
             </div>
@@ -272,13 +280,11 @@
         <p class="text-gray-500 text-xs">© 2024 All Rights Reserved</p>
     </div>
 
-    <!-- Nhạc nền -->
     <audio id="bg-music" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Vào trang
         function enterSite() {
             const welcome = document.getElementById('welcome-screen');
             const main = document.getElementById('main-content');
@@ -290,10 +296,9 @@
                 body.classList.remove('locked');
             }, 300);
             music.volume = 0.4;
-            music.play().catch(e => console.log("Cần tương tác để phát nhạc"));
+            music.play().catch(e => console.log("Interaction required to play music"));
         }
 
-        // Tuyết rơi
         const snowSymbols = ['❄', '❅', '❆', '•']; 
         function createSnowflake() {
             const snowflake = document.createElement('div');
@@ -311,12 +316,10 @@
         }
         setInterval(createSnowflake, 300);
 
-        // Hiệu ứng gõ chữ cho Tên Profile (NgThAnh)
         const nameElement = document.getElementById('name-typewriter');
         const nameText = "NgThAnh";
         let nameIndex = 0;
         let nameDeleting = false;
-
         function typeNameEffect() {
             if (nameDeleting) {
                 nameElement.textContent = nameText.substring(0, nameIndex - 1);
@@ -325,7 +328,6 @@
                 nameElement.textContent = nameText.substring(0, nameIndex + 1);
                 nameIndex++;
             }
-
             if (!nameDeleting && nameIndex === nameText.length) {
                 nameDeleting = true;
                 setTimeout(typeNameEffect, 2000); 
@@ -338,21 +340,17 @@
         }
         typeNameEffect();
 
-        // Hiệu ứng gõ chữ cho Title của Website (@ng the anh)
         const titleText = "@ng the anh";
         let titleIndex = 0;
         let titleDeleting = false;
-
         function typeTitleEffect() {
             const currentTitle = titleText.substring(0, titleIndex);
-            document.title = currentTitle || "@"; // Tránh tiêu đề trống rỗng
-
+            document.title = currentTitle || "@"; 
             if (titleDeleting) {
                 titleIndex--;
             } else {
                 titleIndex++;
             }
-
             if (!titleDeleting && titleIndex > titleText.length) {
                 titleDeleting = true;
                 setTimeout(typeTitleEffect, 2000); 
@@ -364,6 +362,22 @@
             }
         }
         typeTitleEffect();
+
+        function updateVietnamTime() {
+            const clockElement = document.getElementById('vn-clock');
+            const now = new Date();
+            const options = { 
+                timeZone: 'Asia/Ho_Chi_Minh', 
+                hour12: true, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            };
+            const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
+            clockElement.textContent = timeString;
+        }
+        setInterval(updateVietnamTime, 1000);
+        updateVietnamTime();
     </script>
 </body>
 </html>
