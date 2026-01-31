@@ -114,6 +114,15 @@
             z-index: 5;
             border: 3px solid #1a1a1a;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            
+            /* THÊM HIỆU ỨNG XOAY Ở ĐÂY */
+            animation: avatarSpin 2s linear infinite; 
+        }
+
+        /* Định nghĩa animation xoay vòng */
+        @keyframes avatarSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Hiệu ứng khung viền kép neon */
