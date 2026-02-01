@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ng the anh</title>
-    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-MTXMQmc-qoI8tC4L83xG20JU5gqFJcVIzVf8G4o&s=0" type="image/png">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJlx4rgdKXcDO7NFXBCt4dFoLisDMgHQTDjoHPq7Y&s=0" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background-image: url('https://media.tenor.com/dvWbEudoAgYAAAAM/gojo-gojo-satoru.gif'); 
+            background-image: url('https://steamuserimages-a.akamaihd.net/ugc/248087696036864457/A9AFBDD21490832F7D693B9DB1924ADCD510BB1A/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false'); 
             background-size: cover;
             background-position: center;
             filter: brightness(0.5);
@@ -94,18 +94,15 @@
             transform: scale(1.05);
             letter-spacing: 5px;
         }
-
-        /* --- PHẦN CHỈNH SỬA AVATAR MỚI --- */
         .avatar-container {
             position: relative;
             width: 150px;
             height: 150px;
-            margin: 20px auto 10px auto; /* Tăng margin top để vương miện không bị che */
+            margin: 20px auto 10px auto;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-
         .avatar-img {
             width: 130px;
             height: 130px;
@@ -114,71 +111,57 @@
             z-index: 5;
             border: 3px solid #1a1a1a;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            
-            /* THÊM HIỆU ỨNG XOAY Ở ĐÂY */
             animation: avatarSpin 2s linear infinite; 
         }
-
-        /* Định nghĩa animation xoay vòng */
         @keyframes avatarSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* Hiệu ứng khung viền kép neon */
         .fancy-border-1, .fancy-border-2 {
             position: absolute;
             border-radius: 50%;
             border: 2px solid transparent;
             z-index: 3;
         }
-
         .fancy-border-1 {
             inset: 0;
-            border-top: 2px solid #00f2ea; /* Màu xanh cyan */
+            border-top: 2px solid #00f2ea;
             border-right: 2px solid #00f2ea;
             box-shadow: 0 0 10px #00f2ea;
             animation: spin 6s linear infinite;
         }
-
         .fancy-border-2 {
-            inset: 8px; /* Nhỏ hơn vòng ngoài */
-            border-bottom: 2px solid #ff0050; /* Màu hồng neon */
+            inset: 8px;
+            border-bottom: 2px solid #ff0050;
             border-left: 2px solid #ff0050;
             box-shadow: 0 0 10px #ff0050;
-            animation: spin 4s linear infinite reverse; /* Xoay ngược chiều */
+            animation: spin 4s linear infinite reverse;
         }
-
-        /* Vương miện */
         .crown {
             position: absolute;
-            top: -35px; /* Vị trí trên đầu */
+            top: -35px;
             left: 50%;
             transform: translateX(-50%) rotate(-5deg);
             font-size: 2.5rem;
-            color: #ffd700; /* Màu vàng Gold */
+            color: #ffd700;
             z-index: 20;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 
                          0 0 20px rgba(255, 165, 0, 0.6);
             filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
             animation: crownFloat 3s ease-in-out infinite;
         }
-
         @keyframes crownFloat {
             0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
             50% { transform: translateX(-50%) translateY(-6px) rotate(0deg); }
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* --- KẾT THÚC PHẦN CHỈNH SỬA AVATAR --- */
-
         .glass-card {
-            background: rgba(30, 30, 30, 0.65);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(30, 30, 30, 0.25); 
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
@@ -232,7 +215,7 @@
 
     <div id="welcome-screen">
         <div class="relative group cursor-pointer" onclick="enterSite()">
-            <img src="https://media.tenor.com/nDp-K4NXOS4AAAAM/%D0%B3%D0%BE%D0%B4%D0%B6%D0%BE.gif" 
+            <img src="https://kenh14cdn.com/thumb_w/600/203336854389633024/2021/9/3/photo1630641817712-1630641818078451769830.gif" 
                  class="w-24 h-24 rounded-full border-2 border-white/50 mx-auto mb-6 shadow-[0_0_30px_rgba(255,255,255,0.3)] animate-pulse object-cover">
             <div class="enter-btn text-white">CLICK TO CONTINUE</div>
             <p class="text-gray-400 text-sm mt-4 text-center tracking-widest opacity-80">THE ANH PROFILE</p>
@@ -249,27 +232,18 @@
             </div>
             
             <div class="px-6 pb-8 -mt-16 flex flex-col items-center text-center relative z-10">
-                <!-- PHẦN AVATAR MỚI -->
                 <div class="avatar-container">
-                    <!-- Vương miện -->
                     <div class="crown">
                         <i class="fa-solid fa-crown"></i>
                     </div>
-
-                    <!-- Vòng xoay neon 1 -->
                     <div class="fancy-border-1"></div>
-                    <!-- Vòng xoay neon 2 -->
                     <div class="fancy-border-2"></div>
-
-                    <!-- Ảnh đại diện -->
-                    <img src="https://i.pinimg.com/originals/7a/2b/8a/7a2b8a6aac5f175f073e4035b753b923.gif" alt="Avatar" class="avatar-img">
+                    <img src="https://i.pinimg.com/originals/c8/c5/6f/c8c56ffe7be0b3e16e36d58a6949f1f7.gif" alt="Avatar" class="avatar-img">
                     
-                    <!-- Chấm xanh Online -->
                     <div class="absolute bottom-4 right-4 w-4 h-4 bg-green-500 rounded-full border-2 border-[#1a1a1a] z-10 animate-ping"></div>
                     <div class="absolute bottom-4 right-4 w-4 h-4 bg-green-500 rounded-full border-2 border-[#1a1a1a] z-10"></div>
                 </div>
-                <!-- KẾT THÚC PHẦN AVATAR MỚI -->
-                
+
                 <div class="name-wrapper">
                     <h1 class="text-2xl font-bold text-white flex items-center">
                         <span id="name-typewriter"></span><span class="cursor"></span>
@@ -350,11 +324,13 @@
             const main = document.getElementById('main-content');
             const body = document.body;
             const music = document.getElementById('bg-music');
+
             welcome.classList.add('slide-up');
             setTimeout(() => {
                 main.classList.remove('opacity-0', 'scale-95');
                 body.classList.remove('locked');
             }, 300);
+
             music.volume = 0.4;
             music.play().catch(e => console.log("Interaction required to play music"));
         }
@@ -377,9 +353,10 @@
         setInterval(createSnowflake, 300);
 
         const nameElement = document.getElementById('name-typewriter');
-        const nameText = "NgThAnh";
+        const nameText = "Ng The Anh";
         let nameIndex = 0;
         let nameDeleting = false;
+
         function typeNameEffect() {
             if (nameDeleting) {
                 nameElement.textContent = nameText.substring(0, nameIndex - 1);
@@ -388,6 +365,7 @@
                 nameElement.textContent = nameText.substring(0, nameIndex + 1);
                 nameIndex++;
             }
+
             if (!nameDeleting && nameIndex === nameText.length) {
                 nameDeleting = true;
                 setTimeout(typeNameEffect, 2000); 
@@ -403,6 +381,7 @@
         const titleText = "@ng the anh";
         let titleIndex = 0;
         let titleDeleting = false;
+
         function typeTitleEffect() {
             const currentTitle = titleText.substring(0, titleIndex);
             document.title = currentTitle || "@"; 
@@ -411,6 +390,7 @@
             } else {
                 titleIndex++;
             }
+
             if (!titleDeleting && titleIndex > titleText.length) {
                 titleDeleting = true;
                 setTimeout(typeTitleEffect, 2000); 
